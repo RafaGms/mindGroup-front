@@ -8,7 +8,7 @@ const Header = () => {
          <Card className="rounded-none">
             <CardContent className="flex justify-between pb-0 py-6">
                <div>
-                  <Image src='/logo.png' width={70} height={40} alt='logo' />
+                  <Image src='/assets/logo.png' width={70} height={40} alt='logo' />
                </div>
                <div className='flex gap-3'>
                   <Button className="flex gap-1  border-primary" >
