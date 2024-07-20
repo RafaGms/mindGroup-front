@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Header from "./_components/header";
 import { Button } from "./_components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -10,7 +11,7 @@ export default function Home() {
         <div className="max-w-lg w-full flex flex-col gap-5">
           <p className="text-3xl text-center md:text-left md:text-5xl font-bold ">Controle financeiro pessoal com praticidade além das planilhas. Gerencie suas finanças com facilidade e inteligência.</p>
           <div className="flex justify-center md:justify-start">
-            <Button className="w-full max-w-48 h-10 text-xl text-white">Vamos-lá</Button>
+            <Button className="w-full max-w-48 h-10 text-xl text-white" asChild><Link href='/login'>Comece já</Link></Button>
           </div>
         </div>
 
