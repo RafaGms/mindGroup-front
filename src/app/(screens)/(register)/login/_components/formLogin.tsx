@@ -53,7 +53,7 @@ const FromLogin = () => {
                   </div>
 
                   <div className="text-center mt-6">
-                     <p>Não tem uma conta? <Link href='/cadastro' className="text-primary"> Cadastre-se</Link></p>
+                     <p>Não tem uma conta? <Link href='/register' className="text-primary"> Cadastre-se</Link></p>
                   </div>
                </CardContent>
             </Card>
