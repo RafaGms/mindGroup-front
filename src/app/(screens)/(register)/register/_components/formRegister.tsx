@@ -29,6 +29,7 @@ const FormRegister = () => {
          <form onSubmit={handleSubmit}>
             <Card>
                <CardContent className="px-4 py-5">
+
                   <div className="mb-3">
                      <Label htmlFor="name">Nome</Label>
                      <Input

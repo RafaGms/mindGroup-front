@@ -12,7 +12,7 @@ const Header = () => {
                   <Image src='/assets/logo.png' width={70} height={70} alt='logo' />
                </div>
                <div className='flex gap-3'>
-                  <Button className="flex gap-1  border-primary" >
+                  <Button className="flex gap-1 text-white border-primary" >
                      <Link href='/login'>Login</Link>
                   </Button>
                   <Button className="flex gap-1 text-primary border-primary" variant={"outline"} asChild>
