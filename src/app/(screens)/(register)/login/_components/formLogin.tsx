@@ -3,17 +3,31 @@ import { Button } from "@/app/_components/ui/button";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
+import { AuthContext } from "@/app/context/authContext";
 import Link from "next/link";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 const FromLogin = () => {
    const [email, setEmail] = useState<string>('');
    const [password, setPassword] = useState<string>('');
+   const [error, setError] = useState<string | null>(null);
+   const { signIn } = useContext(AuthContext);
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log(email, password)
+      setError(null);
+
+      if (!email || !password) {
+         setError('Por favor, preencha todos os campos.');
+         return;
+      }
+
+      try {
+         await signIn(email, password);
+      } catch (e) {
+         setError('Falha no login. Verifique suas credenciais e tente novamente.');
+      }
    }
 
    return (
@@ -24,6 +38,7 @@ const FromLogin = () => {
          <form onSubmit={handleSubmit}>
             <Card>
                <CardContent className="px-4 py-5">
+                  {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                   <div className="mb-3">
                      <Label htmlFor="email">Email</Label>
                      <Input
