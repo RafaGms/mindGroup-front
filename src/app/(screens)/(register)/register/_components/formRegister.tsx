@@ -9,10 +9,13 @@ import { useContext, useState } from "react";
 
 const FormRegister = () => {
    const [name, setName] = useState<string>('');
-   const [image, setImage] = useState<File>();
+   const [image, setImage] = useState<File | undefined>();
    const [email, setEmail] = useState<string>('');
    const [password, setPassword] = useState<string>('');
-   const { register } = useContext(AuthContext)
+   const [confirmPassword, setConfirmPassword] = useState<string>('');
+   const [error, setError] = useState<string | null>(null);
+   const [success, setSuccess] = useState<string | null>(null);
+   const { register } = useContext(AuthContext);
 
    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
@@ -21,17 +24,55 @@ const FormRegister = () => {
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (!image) {
-         console.error("Image is required");
+
+      // Field validations:
+      // if the fields are emptyand 
+      if (!name || !email || !password || !confirmPassword || !image) {
+         setError("Todos os campos são obrigatórios.");
          return;
       }
-      try {
-         await register(name, image, email, password)
-         console.log(image, name)
-      } catch (error) {
-         console.error("Error registering user:", error);
+      // if the password is a minimum of 4 digits
+      if (password.length < 4) {
+         setError("A senha deve ter pelo menos 4 dígitos.");
+         return;
       }
-   }
+      // if the password fields are the same 
+      if (password !== confirmPassword) {
+         setError("As senhas não correspondem.");
+         return;
+      }
+      //if the email is valid
+      if (!validateEmail(email)) {
+         setError("O e-mail é inválido.");
+         return;
+      }
+      //if the image has a maximum of 8MB
+      if (image.size > 8 * 1024 * 1024) { // Limite de 8MB
+         setError("A imagem deve ter no máximo 8MB.");
+         return;
+      }
+
+      setError(null);
+
+      try {
+         await register(name, image, email, password);
+         setSuccess("Cadastro realizado com sucesso!");
+         setName('');
+         setImage(undefined);
+         setEmail('');
+         setPassword('');
+         setConfirmPassword('');
+      } catch (error) {
+         setError("Erro ao cadastrar o usuário.");
+      }
+   };
+
+   // Function of validation email
+   const validateEmail = (email: string): boolean => {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+   };
+
    return (
       <div className="p-6 w-full md:max-w-lg">
          <div>
@@ -40,6 +81,8 @@ const FormRegister = () => {
          <form onSubmit={handleSubmit}>
             <Card>
                <CardContent className="px-4 py-5">
+                  {error && <div className="mb-4 text-center text-red-500">{error}</div>}
+                  {success && <div className="mb-4 text-center text-green-500">{success}</div>}
 
                   <div className="mb-3">
                      <Label htmlFor="name">Nome</Label>
@@ -87,6 +130,18 @@ const FormRegister = () => {
                         aria-label="senha"
                         autoComplete="current-password" />
                   </div>
+                  <div className="mb-3">
+                     <Label htmlFor="confirmPassword">Confirmar Senha</Label>
+                     <Input
+                        className="mt-3 mb-5"
+                        id="confirmPassword"
+                        placeholder="Confirmar Senha"
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        aria-label="confirm-password"
+                        autoComplete="new-password" />
+                  </div>
                   <div className="mb-3 flex justify-center">
                      <Button type="submit" className="text-white">Cadastrar</Button>
                   </div>
@@ -99,6 +154,6 @@ const FormRegister = () => {
          </form>
       </div>
    );
-}
+};
 
 export default FormRegister;
