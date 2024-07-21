@@ -3,23 +3,34 @@ import { Button } from "@/app/_components/ui/button";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
+import { AuthContext } from "@/app/context/authContext";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 const FormRegister = () => {
    const [name, setName] = useState<string>('');
-   const [image, setImage] = useState<File | null>(null);
+   const [image, setImage] = useState<File>();
    const [email, setEmail] = useState<string>('');
    const [password, setPassword] = useState<string>('');
+   const { register } = useContext(AuthContext)
 
    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0] || null;
+      const file = e.target.files?.[0];
       setImage(file);
    };
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log(name, image, email, password);
+      if (!image) {
+         console.error("Image is required");
+         return;
+      }
+      try {
+         await register(name, image, email, password)
+         console.log(image, name)
+      } catch (error) {
+         console.error("Error registering user:", error);
+      }
    }
    return (
       <div className="p-6 w-full md:max-w-lg">
