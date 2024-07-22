@@ -3,7 +3,7 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import { AuthContextProp, Iuser } from "../types/types";
 import { setCookie, parseCookies } from "nookies";
 import { useRouter } from "next/navigation";
-
+import { api } from "../service/axiosConfig";
 
 export const AuthContext = createContext<AuthContextProp>({} as AuthContextProp);
 
@@ -55,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setCookie(undefined, 'finance-token', data.token, {
                maxAge: 120 * 120 * 1, //4 hours
             });
+            api.defaults.headers['Authorization'] = `Bearer ${data.token}`;
             setUser(data.user);
             router.push('/dashboard');
          } else {

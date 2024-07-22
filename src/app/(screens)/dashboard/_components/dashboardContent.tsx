@@ -1,22 +1,27 @@
+'use client';
+
+import { useContext, useEffect, useState } from "react";
+import { api } from "@/app/service/axiosConfig";
 import Header from "@/app/_components/header";
 import { Button } from "@/app/_components/ui/button";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { AuthContext } from "@/app/context/authContext";
-import { useContext } from "react";
 
-
-const DashboardPage = () => {
-
-   console.log('vamo pegar')
+const DashboardContent = () => {
+   const { user } = useContext(AuthContext);
+   useEffect(() => {
+      api.post('/users')
+   }, [])
+      ;
    return (
       <div>
          <Header />
-         <div className="container ">
+         <div className="container">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6 mt-10">
                <div>
                   <Card>
                      <CardContent>
-                        Entada
+                        Entrada
                      </CardContent>
                   </Card>
                </div>
@@ -66,4 +71,4 @@ const DashboardPage = () => {
    );
 }
 
-export default DashboardPage;
+export default DashboardContent;
