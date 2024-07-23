@@ -13,7 +13,6 @@ export function middleware(request: NextRequest) {
    return NextResponse.next();
 }
 
-// Função auxiliar para analisar cookies
 function parseCookies(cookieHeader: string | null) {
    const cookies: Record<string, string> = {};
    if (cookieHeader) {
