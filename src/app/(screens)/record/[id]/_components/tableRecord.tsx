@@ -1,15 +1,19 @@
 "use client";
 
 import { Button } from "@/app/_components/ui/button";
+import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/app/_components/ui/dialog";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/app/_components/ui/table";
 import { IparamsUserId, Itransation } from "@/app/types/types";
+import { Dialog } from "@radix-ui/react-dialog";
 import { Edit, Trash2, ArrowUpCircle, ArrowDownCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { deleteTransactionApi } from "../../../../api/deleteApi";
 
 const TableRecord = ({ userId }: IparamsUserId) => {
    const [transactions, setTransactions] = useState<Itransation[]>([]);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
+   const [selectedTransactionId, setSelectedTransactionId] = useState<number | null>(null);
 
    useEffect(() => {
       const fetchTransactions = async () => {
@@ -37,6 +41,22 @@ const TableRecord = ({ userId }: IparamsUserId) => {
 
       fetchTransactions();
    }, [userId]);
+
+   const handleDelete = async () => {
+      if (selectedTransactionId !== null) {
+         try {
+            await deleteTransactionApi(selectedTransactionId);
+            setTransactions(transactions.filter(transaction => transaction.id !== selectedTransactionId));
+            setSelectedTransactionId(null);
+         } catch (error) {
+            if (error instanceof Error) {
+               setError(`Erro ao excluir transação: ${error.message}`);
+            } else {
+               setError('Erro desconhecido ao excluir transação');
+            }
+         }
+      }
+   };
 
    if (loading) {
       return <div>Loading...</div>;
@@ -107,7 +127,31 @@ const TableRecord = ({ userId }: IparamsUserId) => {
                         <TableCell className="text-right">
                            <div className="flex justify-end gap-3">
                               <Button size="icon"><Edit /></Button>
-                              <Button size="icon"><Trash2 /></Button>
+                              <Dialog>
+                                 <DialogTrigger asChild>
+                                    <Button size="icon" onClick={() => setSelectedTransactionId(transaction.id)}>
+                                       <Trash2 />
+                                    </Button>
+                                 </DialogTrigger>
+                                 <DialogContent>
+                                    <DialogHeader>
+                                       <DialogTitle>Excluir Transação</DialogTitle>
+                                       <DialogDescription>
+                                          Você está prestes a excluir uma transação. Esta ação é irreversível e você não poderá recuperar esta transação depois que ela for excluída.
+                                          <span className="font-semibold text-md text-destructive ml-3">Tem certeza de que deseja continuar?</span>
+                                       </DialogDescription>
+                                    </DialogHeader>
+                                    <DialogFooter>
+                                       <Button
+                                          variant={"destructive"}
+                                          onClick={handleDelete}
+                                       >
+                                          Excluir
+                                       </Button>
+                                       <DialogClose asChild><Button variant={"outline"} onClick={() => setSelectedTransactionId(null)}>Cancelar</Button></DialogClose>
+                                    </DialogFooter>
+                                 </DialogContent>
+                              </Dialog>
                            </div>
                         </TableCell>
                      </TableRow>
