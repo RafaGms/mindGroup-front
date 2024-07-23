@@ -6,6 +6,16 @@ export interface AuthContextProp {
 }
 
 export interface Iuser {
+   id: number;
    name: string;
    email: string;
+}
+
+export interface Itransation {
+   id: number;
+   description: string;
+   amount: number;
+   UserId: number;
+   type: string;
+   date: string;
 }
