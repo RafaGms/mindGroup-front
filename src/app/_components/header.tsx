@@ -11,13 +11,14 @@ import { Menu } from 'lucide-react';
 
 const Header = () => {
    const { user } = useContext(AuthContext)
+   if (!user?.id) return;
    return (
       <div>
          <Card className="rounded-none">
             <CardContent className="flex justify-between pb-0 py-6">
-               <div className='flex gap-10'>
+               <div className='flex gap-4 sm:gap-10'>
                   <Image src='/assets/logo.png' width={70} height={70} alt='logo' />
-                  <div className='flex gap-1'>
+                  <div className='gap-1 hidden sm:flex'>
                      <Button variant={'link'}>
                         <Link href='/dashboard'>Visão geral</Link>
                      </Button>

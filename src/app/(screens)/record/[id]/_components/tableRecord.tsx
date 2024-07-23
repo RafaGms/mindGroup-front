@@ -67,7 +67,7 @@ const TableRecord = ({ userId }: IparamsUserId) => {
       <div className="bg-card rounded-3xl px-5 py-6 my-5">
          <Table>
             <TableCaption className="text- text-primary font-medium text-md">
-               Saldo Previsto:<span className={`${balance < 0 ? 'text-red-600' : 'text-green-600'}`}> {balance < 0 ? (`- R$ ${balance.toFixed(2).replace('.', ',')}`) : (`+ R$ ${balance.toFixed(2).replace('.', ',')}`)}</span>
+               Saldo Previsto:<span className={`${balance < 0 ? 'text-red-600' : 'text-green-600'}`}> {balance < 0 ? (`R$ ${balance.toFixed(2).replace('.', ',')}`) : (`+ R$ ${balance.toFixed(2).replace('.', ',')}`)}</span>
             </TableCaption>
             <TableHeader>
                <TableRow>

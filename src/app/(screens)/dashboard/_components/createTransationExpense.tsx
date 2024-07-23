@@ -8,7 +8,7 @@ import { AuthContext } from "@/app/context/authContext";
 import { CircleMinus } from "lucide-react";
 import { useState, useContext } from "react";
 
-const CreateTransactionExpense = () => {
+const CreateTransactionExpense = ({ onTransactionCreated }: any) => {
    const [description, setDescription] = useState<string>('');
    const [amount, setAmount] = useState<number | null>(null);
    const [error, setError] = useState<string>('');
@@ -45,6 +45,7 @@ const CreateTransactionExpense = () => {
             setSuccess('Transação cadastrada com sucesso!');
             setDescription('');
             setAmount(null);
+            onTransactionCreated();
          } else {
             const errorData = await response.json();
             setError(errorData.error || 'Falha no cadastro.');
