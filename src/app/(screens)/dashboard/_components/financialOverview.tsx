@@ -5,6 +5,8 @@ import { AuthContext } from "@/app/context/authContext";
 import { CircleMinus } from "lucide-react";
 import { useContext } from "react";
 import CreateTransationPage from "./createTransationIncome";
+import CreateTransactionIncome from "./createTransationIncome";
+import CreateTransactionExpense from "./createTransationExpense";
 
 const FinancialOverview = () => {
    const { user } = useContext(AuthContext)
@@ -36,10 +38,10 @@ const FinancialOverview = () => {
 
                      <div className="flex justify-center items-center gap-2 md:border-l-2 ">
                         <div className="ml-10">
-                           <CreateTransationPage />
+                           <CreateTransactionIncome />
                         </div>
                         <div>
-                           <Button className="py-10"><div className="flex flex-col gap-1 items-center"><CircleMinus size={36} />Despesas</div></Button>
+                           <CreateTransactionExpense />
                         </div>
                      </div>
 

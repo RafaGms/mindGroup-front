@@ -9,7 +9,6 @@ import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import SideMenu from './sideMenu';
 import { Menu } from 'lucide-react';
 
-
 const Header = () => {
    const { user } = useContext(AuthContext)
    return (

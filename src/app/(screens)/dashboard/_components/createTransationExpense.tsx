@@ -8,7 +8,7 @@ import { AuthContext } from "@/app/context/authContext";
 import { CirclePlus } from "lucide-react";
 import { useState, useContext } from "react";
 
-const CreateTransactionIncome = () => {
+const CreateTransactionExpense = () => {
    const [description, setDescription] = useState<string>('');
    const [amount, setAmount] = useState<number | null>(null);
    const [error, setError] = useState<string>('');
@@ -31,7 +31,7 @@ const CreateTransactionIncome = () => {
       }
 
       const userId = user?.id;
-      const type = 'income';
+      const type = 'expense';
 
       try {
          const response = await fetch('http://localhost:8000/transation', {
@@ -61,14 +61,14 @@ const CreateTransactionIncome = () => {
                <Button className="py-10">
                   <div className="flex flex-col gap-1 items-center">
                      <CirclePlus size={36} />
-                     Receitas
+                     Despesas
                   </div>
                </Button>
             </DialogTrigger>
             <DialogContent>
                <form onSubmit={handleClickRegister}>
-                  <DialogTitle>Nova Receita</DialogTitle>
-                  <DialogDescription>Adicione uma nova receita ao seu controle financeiro</DialogDescription>
+                  <DialogTitle>Nova Despesa</DialogTitle>
+                  <DialogDescription>Adicione uma nova despesa ao seu controle financeiro</DialogDescription>
                   {error && <p className="text-red-500 mt-3">{error}</p>}
                   {success && <p className="text-green-500 mt-3">{success}</p>}
                   <div>
@@ -97,7 +97,7 @@ const CreateTransactionIncome = () => {
                         />
                      </div>
                   </div>
-                  <DialogFooter className="spac">
+                  <DialogFooter>
                      <DialogClose asChild>
                         <Button className="bg-destructive">Cancelar</Button>
                      </DialogClose>
@@ -109,4 +109,4 @@ const CreateTransactionIncome = () => {
       </div>
    );
 }
-export default CreateTransactionIncome;
+export default CreateTransactionExpense;
