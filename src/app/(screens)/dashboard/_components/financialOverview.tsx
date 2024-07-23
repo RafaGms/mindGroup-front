@@ -14,40 +14,35 @@ const FinancialOverview = () => {
    return (
       <div>
          <div className="my-6">
-            <Card>
-               <CardContent className="p-6 ">
-                  <div className="flex justify-center md:justify-between items-center flex-wrap gap-3">
-
-                     <div className="flex-col justify-between w-full sm:w-auto m-auto sm:m-0">
-                        <h1 className=""> {'Olá ' + user?.name}</h1>
-                        <div className="flex flex-wrap gap-4 my-3 w-full justify-center">
-                           <div className="text-center shadow-lg sm:w-auto w-full shadow-slate-300 p-3 rounded-xl">
-                              <p>Receita mensal</p>
-                              <p className="text-green-400 -tracking-tighter text-lg font-medium">R$500,00</p>
-                           </div>
-                           <div className="text-center sm:w-auto w-full shadow-lg  shadow-slate-300 p-3 rounded-xl">
-                              <p>Despesa mensal</p>
-                              <p className="text-red-400 -tracking-tighter text-lg font-medium">R$500,00</p>
-                           </div>
-                           <div className="text-center sm:w-auto w-full shadow-lg shadow-slate-300 p-3 rounded-xl">
-                              <p>Saldo geral</p>
-                              <p className="text-red-400 -tracking-tighter text-lg font-medium">R$500,00</p>
-                           </div>
+            <div className="bg-card rounded-3xl px-4 py-5">
+               <div className="flex justify-center md:justify-between items-center flex-wrap gap-3">
+                  <div className="flex-col justify-between w-full sm:w-auto m-auto sm:m-0">
+                     <h1 className=""> {'Olá ' + user?.name}</h1>
+                     <div className="flex flex-wrap gap-4 my-3 w-full justify-center">
+                        <div className="text-center shadow-lg sm:w-auto w-full shadow-slate-300 p-3 rounded-xl">
+                           <p>Receita mensal</p>
+                           <p className="text-green-600 -tracking-tighter text-lg font-medium">R$500,00</p>
+                        </div>
+                        <div className="text-center sm:w-auto w-full shadow-lg  shadow-slate-300 p-3 rounded-xl">
+                           <p>Despesa mensal</p>
+                           <p className="text-red-600 -tracking-tighter text-lg font-medium">R$500,00</p>
+                        </div>
+                        <div className="text-center sm:w-auto w-full shadow-lg shadow-slate-300 p-3 rounded-xl">
+                           <p>Saldo geral</p>
+                           <p className="text-red-600 -tracking-tighter text-lg font-medium">R$500,00</p>
                         </div>
                      </div>
-
-                     <div className="flex justify-center items-center gap-2 md:border-l-2 ">
-                        <div className="ml-10">
-                           <CreateTransactionIncome />
-                        </div>
-                        <div>
-                           <CreateTransactionExpense />
-                        </div>
-                     </div>
-
                   </div>
-               </CardContent>
-            </Card>
+                  <div className="flex justify-center items-center gap-2 md:border-l-2 ">
+                     <div className="ml-10">
+                        <CreateTransactionIncome />
+                     </div>
+                     <div>
+                        <CreateTransactionExpense />
+                     </div>
+                  </div>
+               </div>
+            </div>
          </div>
       </div>
    );

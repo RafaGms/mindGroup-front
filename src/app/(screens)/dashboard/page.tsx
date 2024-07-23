@@ -5,7 +5,7 @@ const DashboardPage = () => {
    return (
       <div>
          <Header />
-         <div className="container ">
+         <div className="container">
             <FinancialOverview />
          </div>
       </div>

@@ -4,8 +4,11 @@ export function middleware(request: NextRequest) {
    const cookieHeader = request.headers.get('cookie');
    const cookies = parseCookies(cookieHeader);
    const token = cookies['finance-token'];
+   const protectedRoutes = ['/dashboard', '/record'];
 
-   if (!token && request.nextUrl.pathname.startsWith('/dashboard')) {
+   const isProtectedRoute = protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route));
+
+   if (!token && isProtectedRoute) {
       console.log('Token ausente. Redirecionando para /login');
       return NextResponse.redirect(new URL('/login', request.url));
    }
@@ -24,5 +27,5 @@ function parseCookies(cookieHeader: string | null) {
 }
 
 export const config = {
-   matcher: ['/dashboard/:path*'],
+   matcher: ['/dashboard/:path*', '/record/:path*'],
 };

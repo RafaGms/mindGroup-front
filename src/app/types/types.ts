@@ -19,3 +19,11 @@ export interface Itransation {
    type: string;
    date: string;
 }
+
+export interface IparamsUserId {
+   userId: number;
+}
+
+export interface Iparams {
+   id: number;
+}

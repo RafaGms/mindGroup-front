@@ -58,7 +58,7 @@ const CreateTransactionIncome = () => {
       <div>
          <Dialog>
             <DialogTrigger asChild>
-               <Button className="py-10">
+               <Button className="py-10 bg-green-600">
                   <div className="flex flex-col gap-1 items-center">
                      <CirclePlus size={36} />
                      Receitas

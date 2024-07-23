@@ -5,7 +5,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
 import { AuthContext } from "@/app/context/authContext";
-import { CirclePlus } from "lucide-react";
+import { CircleMinus } from "lucide-react";
 import { useState, useContext } from "react";
 
 const CreateTransactionExpense = () => {
@@ -58,9 +58,9 @@ const CreateTransactionExpense = () => {
       <div>
          <Dialog>
             <DialogTrigger asChild>
-               <Button className="py-10">
+               <Button className="py-10 bg-red-500">
                   <div className="flex flex-col gap-1 items-center">
-                     <CirclePlus size={36} />
+                     <CircleMinus size={36} />
                      Despesas
                   </div>
                </Button>

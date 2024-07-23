@@ -15,19 +15,32 @@ const Header = () => {
       <div>
          <Card className="rounded-none">
             <CardContent className="flex justify-between pb-0 py-6">
-               <div>
+               <div className='flex gap-10'>
                   <Image src='/assets/logo.png' width={70} height={70} alt='logo' />
+                  <div className='flex gap-1'>
+                     <Button variant={'link'}>
+                        <Link href='/dashboard'>Visão geral</Link>
+                     </Button>
+                     <Button variant={'link'}>
+                        <Link href={`/record/${user?.id}`}>Relatórios</Link>
+                     </Button>
+                  </div>
                </div>
                <div className='flex gap-3'>
                   {user?.name ? (
-                     <Sheet>
-                        <SheetTrigger asChild>
-                           <Button className="px-2"><Menu /></Button>
-                        </SheetTrigger>
-                        <SheetContent>
-                           <SideMenu />
-                        </SheetContent>
-                     </Sheet>
+                     <div className='flex gap-14 items-center'>
+
+                        <div>
+                           <Sheet>
+                              <SheetTrigger asChild>
+                                 <Button className="px-2"><Menu /></Button>
+                              </SheetTrigger>
+                              <SheetContent>
+                                 <SideMenu />
+                              </SheetContent>
+                           </Sheet>
+                        </div>
+                     </div>
                   ) : (
                      <div>
                         <div className='flex gap-3'>
