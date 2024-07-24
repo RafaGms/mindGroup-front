@@ -11,7 +11,6 @@ import { Menu } from 'lucide-react';
 
 const Header = () => {
    const { user } = useContext(AuthContext)
-   if (!user?.id) return;
    return (
       <div>
          <Card className="rounded-none">
@@ -30,7 +29,6 @@ const Header = () => {
                <div className='flex gap-3'>
                   {user?.name ? (
                      <div className='flex gap-14 items-center'>
-
                         <div>
                            <Sheet>
                               <SheetTrigger asChild>

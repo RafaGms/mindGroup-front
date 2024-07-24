@@ -3,6 +3,8 @@ export interface AuthContextProp {
    user: Iuser | null;
    register: (name: string, image: File, email: string, password: string) => Promise<void>;
    signIn: (name: string, email: string) => Promise<void>;
+   logout: () => void;
+   error: string | null;
 }
 
 export interface Iuser {

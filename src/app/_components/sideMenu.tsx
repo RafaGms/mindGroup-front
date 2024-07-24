@@ -6,10 +6,10 @@ import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 
 const SideMenu = () => {
-   const { user } = useContext(AuthContext);
+   const { user, logout } = useContext(AuthContext);
 
    const handleClickLogout = () => {
-      console.log('LOGOUT')
+      logout();
    }
 
    return (

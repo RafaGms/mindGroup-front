@@ -1,7 +1,7 @@
 'use client'
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { AuthContextProp, Iuser } from "../types/types";
-import { setCookie, parseCookies } from "nookies";
+import { setCookie, parseCookies, destroyCookie } from "nookies";
 import { useRouter } from "next/navigation";
 import { api } from "../service/axiosConfig";
 
@@ -61,9 +61,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
          } else {
             const errorData = await response.json();
             setError(errorData.error || 'Falha no login.');
+            console.log('Erro recebido da API:', errorData);
          }
       } catch (error) {
          setError('Falha no login.');
+         console.error('Erro ao fazer login:', error);
       }
    };
 
@@ -92,8 +94,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
    };
 
+   const logout = () => {
+      destroyCookie(null, 'finance-token');
+
+      setUser(null);
+
+      router.push('/');
+   };
+
    return (
-      <AuthContext.Provider value={{ register, signIn, isAuthenticated, user, }}>
+      <AuthContext.Provider value={{ logout, register, signIn, isAuthenticated, user, error }}>
          {children}
       </AuthContext.Provider>
    );
