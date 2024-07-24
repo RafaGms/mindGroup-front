@@ -22,6 +22,7 @@ const TableRecord = ({ userId }: IparamsUserId) => {
    const [error, setError] = useState<string | null>(null);
    const [selectedTransactionId, setSelectedTransactionId] = useState<number | null>(null);
    const [transactionType, setTransactionType] = useState<string>('income');
+   const [searchTerm, setSearchTerm] = useState<string>('');
 
    useEffect(() => {
       const fetchTransactions = async () => {
@@ -110,12 +111,23 @@ const TableRecord = ({ userId }: IparamsUserId) => {
       }, 0);
    };
 
+   const filteredTransactions = transactions.filter(transaction =>
+      transaction.description.toLowerCase().includes(searchTerm.toLowerCase())
+   );
+
    const balance = calculateBalance();
 
    return (
       <div className="bg-card rounded-3xl px-5 py-6 my-5">
+         <Input
+            type="text"
+            placeholder="Buscar por descrição"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="mb-4"
+         />
          <Table>
-            <TableCaption className="text- text-primary font-medium text-md">
+            <TableCaption className="text-primary font-medium text-md">
                Saldo Previsto:<span className={`${balance < 0 ? 'text-red-600' : 'text-green-600'}`}> {balance < 0 ? (`R$ ${balance.toFixed(2).replace('.', ',')}`) : (`+ R$ ${balance.toFixed(2).replace('.', ',')}`)}</span>
             </TableCaption>
             <TableHeader>
@@ -128,12 +140,12 @@ const TableRecord = ({ userId }: IparamsUserId) => {
                </TableRow>
             </TableHeader>
             <TableBody>
-               {transactions.length === 0 ? (
+               {filteredTransactions.length === 0 ? (
                   <TableRow>
                      <TableCell colSpan={5}>Não há transações para este usuário.</TableCell>
                   </TableRow>
                ) : (
-                  transactions.map(transaction => (
+                  filteredTransactions.map(transaction => (
                      <TableRow key={transaction.id}>
                         <TableCell>{transaction.description}</TableCell>
                         <TableCell>

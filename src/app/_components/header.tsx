@@ -14,10 +14,10 @@ const Header = () => {
    return (
       <div>
          <Card className="rounded-none">
-            <CardContent className="flex justify-between pb-0 py-6">
+            <CardContent className="flex justify-between pb-0 py-6 items-center">
                <div className='flex gap-4 sm:gap-10'>
                   <Image src='/assets/logo.png' width={70} height={70} alt='logo' />
-                  <div className='gap-1 hidden sm:flex'>
+                  <div className='gap-1 hidden sm:flex items-center'>
                      <Button variant={'link'}>
                         <Link href='/dashboard'>Visão geral</Link>
                      </Button>
