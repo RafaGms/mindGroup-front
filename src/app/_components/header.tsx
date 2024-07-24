@@ -18,10 +18,13 @@ const Header = () => {
                <div className='flex gap-4 sm:gap-10'>
                   <Image src='/assets/logo.png' width={70} height={70} alt='logo' />
                   <div className='gap-1 hidden sm:flex items-center'>
-                     <Button variant={'link'}>
+                     <Button asChild variant={'link'}>
+                        <Link href='/'>Início</Link>
+                     </Button>
+                     <Button asChild variant={'link'}>
                         <Link href='/dashboard'>Visão geral</Link>
                      </Button>
-                     <Button variant={'link'}>
+                     <Button asChild variant={'link'}>
                         <Link href={`/record/${user?.id}`}>Relatórios</Link>
                      </Button>
                   </div>
@@ -43,7 +46,7 @@ const Header = () => {
                   ) : (
                      <div>
                         <div className='flex gap-3'>
-                           <Button className="flex gap-1 text-white border-primary" >
+                           <Button className="flex gap-1 text-white border-primary" asChild>
                               <Link href='/login'>Login</Link>
                            </Button>
                            <Button className="flex gap-1 text-primary border-primary" variant={"outline"} asChild>

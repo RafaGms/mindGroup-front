@@ -13,7 +13,7 @@ export interface Iuser {
    email: string;
 }
 
-export interface Itransation {
+export interface Itransaction {
    id: number;
    description: string;
    amount: number;

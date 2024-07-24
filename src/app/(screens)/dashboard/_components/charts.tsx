@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
 import * as React from "react";
 import { Area, AreaChart, CartesianGrid } from "recharts";
-import { Card, CardContent, CardDescription, CardHeader, } from "@/app/_components/ui/card";
-import { ChartConfig, ChartContainer, ChartTooltip, } from "@/app/_components/ui/chart";
+import { Card, CardContent, CardDescription, CardHeader } from "@/app/_components/ui/card";
+import { ChartConfig, ChartContainer, ChartTooltip } from "@/app/_components/ui/chart";
 import { AuthContext } from "@/app/context/authContext";
+import { Button } from "@/app/_components/ui/button";
 
 interface Transaction {
    date: string;
@@ -42,66 +43,77 @@ const generateDateRange = (startDate: Date, endDate: Date) => {
    return dates;
 };
 
-export function ChartsLineMultiple() {
+export function ChartsLineMultiple({ onTransactionCreated }: any) {
    const [data, setData] = React.useState<{ date: string; income: number; expense: number }[]>([]);
    const [loading, setLoading] = React.useState(true);
    const [error, setError] = React.useState<string | null>(null);
+   const [refresh, setRefresh] = React.useState(0); // Estado para controle de atualização
    const { user } = React.useContext(AuthContext);
    const id = user?.id;
 
-   React.useEffect(() => {
+   const fetchTransactions = async () => {
       if (!id) return;
-      const fetchTransactions = async () => {
-         try {
-            const response = await fetch(`http://localhost:8000/transations/${id}`);
-            if (!response.ok) {
-               throw new Error("Erro ao buscar transações");
-            }
-            const transactions: Transaction[] = await response.json();
 
-            const endDate = new Date();
-            const startDate = new Date();
-            startDate.setDate(endDate.getDate() - 1);
-
-            const dateRange = generateDateRange(startDate, endDate);
-
-            const processedData = transactions.reduce((acc: any[], transaction) => {
-               const date = new Date(transaction.date).toLocaleDateString();
-               const existing = acc.find((item) => item.date === date);
-
-               if (existing) {
-                  if (transaction.type === 'income') {
-                     existing.income += transaction.amount;
-                  } else {
-                     existing.expense += transaction.amount;
-                  }
-               }
-
-               return acc;
-            }, dateRange);
-
-            setData(processedData);
-         } catch (error) {
-            setError('Erro ao buscar transações');
-            console.error(error);
-         } finally {
-            setLoading(false);
+      try {
+         const response = await fetch(`http://localhost:8000/transactions/${id}`);
+         if (!response.ok) {
+            throw new Error("Erro ao buscar transações");
          }
-      };
+         const transactions: Transaction[] = await response.json();
 
+         const endDate = new Date();
+         const startDate = new Date();
+         startDate.setDate(endDate.getDate() - 1);
+
+         const dateRange = generateDateRange(startDate, endDate);
+
+         const processedData = transactions.reduce((acc: any[], transaction) => {
+            const date = new Date(transaction.date).toLocaleDateString();
+            const existing = acc.find((item) => item.date === date);
+
+            if (existing) {
+               if (transaction.type === 'income') {
+                  existing.income += transaction.amount;
+               } else {
+                  existing.expense += transaction.amount;
+               }
+            }
+
+            return acc;
+         }, dateRange);
+
+         setData(processedData);
+      } catch (error) {
+         setError('Erro ao buscar transações');
+         console.error(error);
+      } finally {
+         setLoading(false);
+      }
+   };
+
+   React.useEffect(() => {
       fetchTransactions();
-   }, [id]);
+   }, [id, refresh]); // Atualiza quando o id ou refresh muda
+
+   const handleRefresh = () => {
+      setRefresh(prev => prev + 1); // Força a atualização do gráfico
+   };
 
    if (loading) return <div>Loading...</div>;
    if (error) return <div>{error}</div>;
 
    return (
-      <div className="col-span-3">
+      <div className="col-span-4">
          <Card className="w-full">
             <CardHeader>
                <CardDescription>
                   Visualização de transações por gráfico
                </CardDescription>
+               <Button
+                  onClick={handleRefresh}
+                  className="mt-4 p-2 bg-blue-500 ">
+                  Atualizar Dados
+               </Button>
             </CardHeader>
             <CardContent className="space-y-4">
                <ChartContainer
@@ -148,9 +160,7 @@ export function ChartsLineMultiple() {
                         </linearGradient>
                      </defs>
                      <CartesianGrid strokeDasharray="3 3" />
-                     <ChartTooltip
-                        cursor={false}
-                     />
+                     <ChartTooltip cursor={false} />
                      <Area
                         type="monotone"
                         dataKey="income"

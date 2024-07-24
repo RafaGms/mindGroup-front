@@ -1,6 +1,6 @@
 export const deleteTransactionApi = async (id: number): Promise<void> => {
    try {
-      const response = await fetch(`http://localhost:8000/transations/${id}`, {
+      const response = await fetch(`http://localhost:8000/transactions/${id}`, {
          method: 'DELETE',
          headers: {
             'Content-Type': 'application/json',

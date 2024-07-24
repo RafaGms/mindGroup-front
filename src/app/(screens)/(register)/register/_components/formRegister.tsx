@@ -81,6 +81,11 @@ const FormRegister = () => {
          <form onSubmit={handleSubmit}>
             <Card>
                <CardContent className="px-4 py-5">
+                  <div className="mb-4 sm:hidden">
+                     <Button asChild variant={"link"}>
+                        <Link href={'/'}>Voltar para iníco</Link>
+                     </Button>
+                  </div>
                   {error && <div className="mb-4 text-center text-red-500">{error}</div>}
                   {success && <div className="mb-4 text-center text-green-500">{success}</div>}
 
@@ -147,7 +152,7 @@ const FormRegister = () => {
                   </div>
 
                   <div className="text-center mt-6">
-                     <p>Já tem uma conta? <Link href='/login' className="text-primary">Entrar</Link></p>
+                     <p>Já tem uma conta? <Link href='/login' className="text-blue-500">Entrar</Link></p>
                   </div>
                </CardContent>
             </Card>

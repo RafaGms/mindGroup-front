@@ -2,14 +2,14 @@
 
 import { AuthContext } from "@/app/context/authContext";
 import { useContext, useEffect, useState } from "react";
-import CreateTransactionIncome from "./createTransationIncome";
-import CreateTransactionExpense from "./createTransationExpense";
-import { Itransation } from "@/app/types/types";
+import CreateTransactionIncome from "./createTransactionIncome";
+import CreateTransactionExpense from "./createTransactionExpense";
+import { Itransaction } from "@/app/types/types";
 
 const FinancialOverview = () => {
    const { user } = useContext(AuthContext);
 
-   const [transactions, setTransactions] = useState<Itransation[]>([]);
+   const [transactions, setTransactions] = useState<Itransaction[]>([]);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
 
@@ -17,7 +17,7 @@ const FinancialOverview = () => {
       if (!user?.id) return;
 
       try {
-         const response = await fetch(`http://localhost:8000/transations/${user.id}`, {
+         const response = await fetch(`http://localhost:8000/transactions/${user.id}`, {
             method: 'GET',
             headers: {
                'Content-Type': 'application/json',

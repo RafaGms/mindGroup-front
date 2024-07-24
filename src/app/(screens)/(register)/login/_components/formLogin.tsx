@@ -38,6 +38,11 @@ const FromLogin = () => {
          <form onSubmit={handleSubmit}>
             <Card>
                <CardContent className="px-4 py-5">
+                  <div className="mb-4 sm:hidden">
+                     <Button asChild variant={"link"}>
+                        <Link href={'/'}>Voltar para iníco</Link>
+                     </Button>
+                  </div>
                   {(localError || error) && <p className="text-red-500 text-center mb-4">{localError || error}</p>}
                   <div className="mb-3">
                      <Label htmlFor="email">Email</Label>
@@ -68,7 +73,7 @@ const FromLogin = () => {
                   </div>
 
                   <div className="text-center mt-6">
-                     <p>Não tem uma conta? <Link href='/register' className="text-primary"> Cadastre-se</Link></p>
+                     <p>Não tem uma conta? <Link href='/register' className="text-blue-500"> Cadastre-se</Link></p>
                   </div>
                </CardContent>
             </Card>

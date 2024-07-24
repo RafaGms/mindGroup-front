@@ -1,9 +1,13 @@
+import Header from "@/app/_components/header";
 import FormRegister from "./_components/formRegister";
 
 const RegisterPage = () => {
    return (
-      <div className="flex justify-center h-screen items-center">
-         <FormRegister />
+      <div>
+         <Header />
+         <div className="flex justify-center  items-center">
+            <FormRegister />
+         </div>
       </div>
    );
 }

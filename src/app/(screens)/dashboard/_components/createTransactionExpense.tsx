@@ -5,10 +5,10 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Input } from "@/app/_components/ui/input";
 import { Label } from "@/app/_components/ui/label";
 import { AuthContext } from "@/app/context/authContext";
-import { CirclePlus } from "lucide-react";
+import { CircleMinus } from "lucide-react";
 import { useState, useContext } from "react";
 
-const CreateTransactionIncome = ({ onTransactionCreated }: any) => {
+const CreateTransactionExpense = ({ onTransactionCreated }: any) => {
    const [description, setDescription] = useState<string>('');
    const [amount, setAmount] = useState<number | null>(null);
    const [error, setError] = useState<string>('');
@@ -31,10 +31,10 @@ const CreateTransactionIncome = ({ onTransactionCreated }: any) => {
       }
 
       const userId = user?.id;
-      const type = 'income';
+      const type = 'expense';
 
       try {
-         const response = await fetch('http://localhost:8000/transation', {
+         const response = await fetch('http://localhost:8000/transaction', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ description, amount, userId, type })
@@ -59,17 +59,17 @@ const CreateTransactionIncome = ({ onTransactionCreated }: any) => {
       <div>
          <Dialog>
             <DialogTrigger asChild>
-               <Button className="py-10 bg-green-600">
+               <Button className="py-10 bg-red-500">
                   <div className="flex flex-col gap-1 items-center">
-                     <CirclePlus size={36} />
-                     Receitas
+                     <CircleMinus size={36} />
+                     Despesas
                   </div>
                </Button>
             </DialogTrigger>
             <DialogContent>
                <form onSubmit={handleClickRegister}>
-                  <DialogTitle>Nova Receita</DialogTitle>
-                  <DialogDescription>Adicione uma nova receita ao seu controle financeiro</DialogDescription>
+                  <DialogTitle>Nova Despesa</DialogTitle>
+                  <DialogDescription>Adicione uma nova despesa ao seu controle financeiro</DialogDescription>
                   {error && <p className="text-red-500 mt-3">{error}</p>}
                   {success && <p className="text-green-500 mt-3">{success}</p>}
                   <div>
@@ -98,7 +98,7 @@ const CreateTransactionIncome = ({ onTransactionCreated }: any) => {
                         />
                      </div>
                   </div>
-                  <DialogFooter className="spac">
+                  <DialogFooter>
                      <DialogClose asChild>
                         <Button className="bg-destructive">Cancelar</Button>
                      </DialogClose>
@@ -110,4 +110,4 @@ const CreateTransactionIncome = ({ onTransactionCreated }: any) => {
       </div>
    );
 }
-export default CreateTransactionIncome;
+export default CreateTransactionExpense;

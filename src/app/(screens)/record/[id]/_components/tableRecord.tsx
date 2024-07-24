@@ -3,7 +3,7 @@
 import { Button } from "@/app/_components/ui/button";
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/app/_components/ui/dialog";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/app/_components/ui/table";
-import { IparamsUserId, Itransation } from "@/app/types/types";
+import { IparamsUserId, Itransaction } from "@/app/types/types";
 import { Dialog } from "@radix-ui/react-dialog";
 import { Edit, Trash2, ArrowUpCircle, ArrowDownCircle } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ const TableRecord = ({ userId }: IparamsUserId) => {
    const [description, setDescription] = useState<string>('');
    const [amount, setAmount] = useState<number | null>(null);
    const [success, setSuccess] = useState<string>('');
-   const [transactions, setTransactions] = useState<Itransation[]>([]);
+   const [transactions, setTransactions] = useState<Itransaction[]>([]);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
    const [selectedTransactionId, setSelectedTransactionId] = useState<number | null>(null);
@@ -27,7 +27,7 @@ const TableRecord = ({ userId }: IparamsUserId) => {
    useEffect(() => {
       const fetchTransactions = async () => {
          try {
-            const response = await fetch(`http://localhost:8000/transations/${userId}`, {
+            const response = await fetch(`http://localhost:8000/transactions/${userId}`, {
                method: 'GET',
                headers: {
                   'Content-Type': 'application/json',
