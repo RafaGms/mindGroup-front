@@ -8,12 +8,20 @@ import { Dialog } from "@radix-ui/react-dialog";
 import { Edit, Trash2, ArrowUpCircle, ArrowDownCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { deleteTransactionApi } from "../../../../api/deleteApi";
+import { editTransactionApi } from "@/app/api/editApi";
+import { Input } from "@/app/_components/ui/input";
+import { Label } from "@/app/_components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/app/_components/ui/radio-group";
 
 const TableRecord = ({ userId }: IparamsUserId) => {
+   const [description, setDescription] = useState<string>('');
+   const [amount, setAmount] = useState<number | null>(null);
+   const [success, setSuccess] = useState<string>('');
    const [transactions, setTransactions] = useState<Itransation[]>([]);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
    const [selectedTransactionId, setSelectedTransactionId] = useState<number | null>(null);
+   const [transactionType, setTransactionType] = useState<string>('income');
 
    useEffect(() => {
       const fetchTransactions = async () => {
@@ -53,6 +61,27 @@ const TableRecord = ({ userId }: IparamsUserId) => {
                setError(`Erro ao excluir transação: ${error.message}`);
             } else {
                setError('Erro desconhecido ao excluir transação');
+            }
+         }
+      }
+   };
+
+   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (selectedTransactionId !== null && description && amount !== null && transactionType) {
+         try {
+            const updatedTransaction = { description, amount, type: transactionType };
+            const editedTransaction = await editTransactionApi(selectedTransactionId, updatedTransaction);
+            setTransactions(transactions.map(transaction =>
+               transaction.id === selectedTransactionId ? editedTransaction : transaction
+            ));
+            setSelectedTransactionId(null);
+            setSuccess('Transação editada com sucesso');
+         } catch (error) {
+            if (error instanceof Error) {
+               setError(`Erro ao editar transação: ${error.message}`);
+            } else {
+               setError('Erro desconhecido ao editar transação');
             }
          }
       }
@@ -126,32 +155,99 @@ const TableRecord = ({ userId }: IparamsUserId) => {
                         </TableCell>
                         <TableCell className="text-right">
                            <div className="flex justify-end gap-3">
-                              <Button size="icon"><Edit /></Button>
-                              <Dialog>
-                                 <DialogTrigger asChild>
-                                    <Button size="icon" onClick={() => setSelectedTransactionId(transaction.id)}>
-                                       <Trash2 />
-                                    </Button>
-                                 </DialogTrigger>
-                                 <DialogContent>
-                                    <DialogHeader>
-                                       <DialogTitle>Excluir Transação</DialogTitle>
-                                       <DialogDescription>
-                                          Você está prestes a excluir uma transação. Esta ação é irreversível e você não poderá recuperar esta transação depois que ela for excluída.
-                                          <span className="font-semibold text-md text-destructive ml-3">Tem certeza de que deseja continuar?</span>
-                                       </DialogDescription>
-                                    </DialogHeader>
-                                    <DialogFooter>
-                                       <Button
-                                          variant={"destructive"}
-                                          onClick={handleDelete}
-                                       >
-                                          Excluir
+                              <div>
+                                 <Dialog>
+                                    <DialogTrigger asChild>
+                                       <Button size="icon" onClick={() => {
+                                          setSelectedTransactionId(transaction.id);
+                                          setDescription(transaction.description);
+                                          setAmount(transaction.amount);
+                                          setTransactionType(transaction.type);
+                                       }}>
+                                          <Edit />
                                        </Button>
-                                       <DialogClose asChild><Button variant={"outline"} onClick={() => setSelectedTransactionId(null)}>Cancelar</Button></DialogClose>
-                                    </DialogFooter>
-                                 </DialogContent>
-                              </Dialog>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                       <form onSubmit={handleEdit}>
+                                          <DialogTitle>Editar Transação</DialogTitle>
+                                          <DialogDescription>Você realmente deseja editar esta transação? As alterações serão salvas permanentemente.</DialogDescription>
+                                          {error && <p className="text-red-500 mt-3">{error}</p>}
+                                          {success && <p className="text-green-500 mt-3">{success}</p>}
+                                          <div>
+                                             <div className="mb-5 mt-4">
+                                                <Label htmlFor="description">Descrição</Label>
+                                                <Input
+                                                   className="mt-2"
+                                                   id="description"
+                                                   placeholder="Descrição"
+                                                   type="text"
+                                                   value={description}
+                                                   onChange={(e) => setDescription(e.target.value)}
+                                                   aria-label="Descrição"
+                                                />
+                                             </div>
+                                             <div className="mb-5">
+                                                <RadioGroup className="gap-4" value={transactionType} onValueChange={setTransactionType}>
+                                                   <div className="flex items-center space-x-2">
+                                                      <RadioGroupItem value="income" id="income" />
+                                                      <Label htmlFor="income">Receita</Label>
+                                                   </div>
+                                                   <div className="flex items-center space-x-2">
+                                                      <RadioGroupItem value="expense" id="expense" />
+                                                      <Label htmlFor="expense">Despesa</Label>
+                                                   </div>
+                                                </RadioGroup>
+                                             </div>
+                                             <div className="mb-3">
+                                                <Label htmlFor="amount">Valor</Label>
+                                                <Input
+                                                   className="mt-2"
+                                                   id="amount"
+                                                   placeholder="Valor"
+                                                   type="number"
+                                                   value={amount !== null ? amount : ''}
+                                                   onChange={(e) => setAmount(parseFloat(e.target.value))}
+                                                   aria-label="amount"
+                                                />
+                                             </div>
+                                          </div>
+                                          <DialogFooter className="spac">
+                                             <DialogClose asChild>
+                                                <Button className="bg-destructive">Cancelar</Button>
+                                             </DialogClose>
+                                             <Button type="submit">Salvar</Button>
+                                          </DialogFooter>
+                                       </form>
+                                    </DialogContent>
+                                 </Dialog>
+                              </div>
+                              <div>
+                                 <Dialog>
+                                    <DialogTrigger asChild>
+                                       <Button size="icon" onClick={() => setSelectedTransactionId(transaction.id)}>
+                                          <Trash2 />
+                                       </Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                       <DialogHeader>
+                                          <DialogTitle>Excluir Transação</DialogTitle>
+                                          <DialogDescription>
+                                             Você está prestes a excluir uma transação. Esta ação é irreversível e você não poderá recuperar esta transação depois que ela for excluída.
+                                             <span className="font-semibold text-md text-destructive ml-3">Tem certeza de que deseja continuar?</span>
+                                          </DialogDescription>
+                                       </DialogHeader>
+                                       <DialogFooter>
+                                          <Button
+                                             variant={"destructive"}
+                                             onClick={handleDelete}
+                                          >
+                                             Excluir
+                                          </Button>
+                                          <DialogClose asChild><Button variant={"outline"} onClick={() => setSelectedTransactionId(null)}>Cancelar</Button></DialogClose>
+                                       </DialogFooter>
+                                    </DialogContent>
+                                 </Dialog>
+                              </div>
                            </div>
                         </TableCell>
                      </TableRow>
